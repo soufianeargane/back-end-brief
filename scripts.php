@@ -40,15 +40,49 @@ function saveTask()
 function updateTask()
 {
     //CODE HERE
+    global $connection;
+    $title_edit = $_POST['title'];
+    $type_edit = $_POST['task-type'];
+    $priority_edit = $_POST['prioritySelect'];
+    $status_edit = $_POST['statusSelect'];
+    $date_edit = $_POST['date'];
+    $description_edit = $_POST['description'];
+    $id = $_POST['id'];
+
+    $sql = "UPDATE tasks 
+    SET title = '$title_edit', type_id = '$type_edit', priority_id = '$priority_edit', status_id = '$status_edit', task_datetime = '$date_edit', description = '$description_edit'
+    WHERE id = $id ";
+    $query_run = mysqli_query($connection, $sql);
+    if ($query_run) {
+        $_SESSION['message'] = "Task has been updated successfully !";
+        header('location: index.php');
+    }
+    // $type = $_POST['task-type'];
+    // $priority = $_POST['prioritySelect'];
+    // $status = $_POST['statusSelect'];
+    // $date = $_POST['date'];
+    // $description = $_POST['description'];
+    // $sql = "UPDATE INTO tasks(`title`,`type_id`,`priority_id`,`status_id`,`task_datetime`,`description`) VALUES('$title_edit','$type','$priority','$status','$date','$description')";
+
     //SQL UPDATE
-    $_SESSION['message'] = "Task has been updated successfully !";
-    header('location: index.php');
+    // $_SESSION['message'] = "Task has been updated successfully !";
+    // header('location: index.php');
 }
 
 function deleteTask()
 {
     //CODE HERE
     //SQL DELETE
-    $_SESSION['message'] = "Task has been deleted successfully !";
-    header('location: index.php');
+    global $connection;
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM tasks WHERE id = $id";
+
+    $query_run = mysqli_query($connection, $sql);
+    if ($query_run) {
+        $_SESSION['message'] = "Task has been deleted successfully !";
+        header('location: index.php');
+    }
+    //     $_SESSION['message'] = "Task has been deleted successfully !";
+    //     header('location: index.php');
 }

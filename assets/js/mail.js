@@ -13,6 +13,7 @@ function edit(id){
     document.getElementById("task-status").value= status;
     document.getElementById("task-date").value= date;
     document.getElementById("task-description").value= description;
+    document.getElementById("task-id").value=id;
     if(type == 1){document.getElementById("task-type-feature").checked = true};
     if(type == 2){document.getElementById("task-type-bug").checked = true};
 
