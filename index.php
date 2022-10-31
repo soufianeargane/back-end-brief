@@ -244,7 +244,7 @@ include('scripts.php');
 			</div>
 
 			<?php if (isset($_SESSION['message'])) : ?>
-				<div class="alert alert-success alert-dismissible fade show">
+				<div class="alert alert-green alert-dismissible fade show">
 					<strong>Success!</strong>
 					<?php
 					echo $_SESSION['message'];
@@ -258,7 +258,15 @@ include('scripts.php');
 				<div class="col-xl-4 col-lg-6">
 					<div class="panel panel-inverse">
 						<div class="panel-heading">
-							<h4 class="panel-title">To do (<span id="to-do-tasks-count">0</span>)</h4>
+							<h4 class="panel-title">To do (<span id="to-do-tasks-count">
+									<?php
+									global $conn;
+									$sql = "SELECT status_id FROM tasks where status_id = 1";
+									$results = mysqli_query($conn, $sql);
+									$rowcount = mysqli_num_rows($results);
+									echo $rowcount;
+									?>
+								</span>)</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -269,31 +277,7 @@ include('scripts.php');
 						<div class="list-group list-group-flush rounded-bottom overflow-hidden panel-body p-0" id="to-do-tasks">
 							<!-- TO DO TASKS HERE -->
 							<?php
-							//PHP CODE HERE
-							//DATA FROM getTasks() FUNCTION
-							$todo = getTasks(1);
-							foreach ($todo as $datum) {
-							?>
-								<!-- <a href="#modal-task" data-bs-toggle="modal"> -->
-								<button id="<?php echo $datum["id"]; ?>" data-status="<?php echo $datum['status_id']; ?>" type="button" data-bs-toggle="modal" data-bs-target="#modal-task" class="w-100 border-0 mb-1 bg-white d-flex " onclick="edit(<?= $datum['id']; ?>), updateAndDelete()">
-									<div class="p-2">
-										<i class="bi bi-question-circle text-green-500 fs-4"></i>
-									</div>
-									<div class="d-flex flex-column text-start py-2">
-										<div data="<?php echo $datum["title"]; ?>" class="fw-bolder h5 mb-1 "> <?php echo $datum["title"]; ?> </div>
-										<div class="d-flex flex-column text-start">
-											<div data="<?php echo $datum['task_datetime']; ?>" class="text-gray-600 mb-1">#1 created in <?php echo $datum['task_datetime']; ?> </div>
-											<div data="<?php echo $datum['description']; ?> " class="mb-2 text-truncate" style="max-width: 16rem;" title=""><?php echo $datum['description']; ?> </div>
-										</div>
-										<div class="">
-											<span data="<?php echo $datum['priority_id']; ?>" class="btn rounded px-2 py-1 text-white bg-cyan-600"> <?php echo $datum['priority_name']; ?> </span>
-											<span data="<?php echo $datum['type_id']; ?>" class="btn btn-secondary rounded px-2 py-1"><?php echo $datum['types_name']; ?> </span>
-										</div>
-									</div>
-								</button>
-								<!-- </a> -->
-							<?php
-							}
+							getTasks(1);
 							?>
 						</div>
 					</div>
@@ -301,7 +285,15 @@ include('scripts.php');
 				<div class="col-xl-4 col-lg-6">
 					<div class="panel panel-inverse">
 						<div class="panel-heading">
-							<h4 class="panel-title">In Progress (<span id="in-progress-tasks-count">0</span>)</h4>
+							<h4 class="panel-title">In Progress (<span id="in-progress-tasks-count">
+									<?php
+									global $conn;
+									$sql = "SELECT status_id FROM tasks where status_id = 2";
+									$results = mysqli_query($conn, $sql);
+									$rowcount = mysqli_num_rows($results);
+									echo $rowcount;
+									?>
+								</span>)</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -313,28 +305,8 @@ include('scripts.php');
 							<!-- IN PROGRESS TASKS HERE -->
 							<?php
 							//PHP CODE HERE
+							getTasks(2);
 							//DATA FROM getTasks() FUNCTION
-							$todo = getTasks(2);
-							foreach ($todo as $datum) {
-							?>
-								<button id="<?php echo $datum["id"]; ?>" data-status="<?php echo $datum['status_id']; ?>" type="button" data-bs-toggle="modal" data-bs-target="#modal-task" class="w-100 border-0 mb-1 bg-white d-flex " onclick="edit(<?= $datum['id']; ?>), updateAndDelete()">
-									<div class="p-2">
-										<i class="bi bi-question-circle text-green-500 fs-4"></i>
-									</div>
-									<div class="d-flex flex-column text-start py-2">
-										<div data="<?php echo $datum["title"]; ?>" class="fw-bolder h5 mb-1 "> <?php echo $datum["title"]; ?> </div>
-										<div class="d-flex flex-column text-start">
-											<div data="<?php echo $datum['task_datetime']; ?>" class="text-gray-600 mb-1">#1 created in <?php echo $datum['task_datetime']; ?> </div>
-											<div data="<?php echo $datum['description']; ?> " class="mb-2 text-truncate" style="max-width: 16rem;" title=""><?php echo $datum['description']; ?> </div>
-										</div>
-										<div class="">
-											<span data="<?php echo $datum['priority_id']; ?>" class="btn rounded px-2 py-1 text-white bg-cyan-600"> <?php echo $datum['priority_name']; ?> </span>
-											<span data="<?php echo $datum['type_id']; ?>" class="btn btn-secondary rounded px-2 py-1"><?php echo $datum['types_name']; ?> </span>
-										</div>
-									</div>
-								</button>
-							<?php
-							}
 							?>
 						</div>
 					</div>
@@ -342,7 +314,15 @@ include('scripts.php');
 				<div class="col-xl-4 col-lg-6">
 					<div class="panel panel-inverse">
 						<div class="panel-heading">
-							<h4 class="panel-title">Done (<span id="done-tasks-count">0</span>)</h4>
+							<h4 class="panel-title">Done (<span id="done-tasks-count">
+									<?php
+									global $conn;
+									$sql = "SELECT status_id FROM tasks where status_id = 3";
+									$results = mysqli_query($conn, $sql);
+									$rowcount = mysqli_num_rows($results);
+									echo $rowcount;
+									?>
+								</span>)</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -354,28 +334,8 @@ include('scripts.php');
 							<!-- DONE TASKS HERE -->
 							<?php
 							//PHP CODE HERE
+							getTasks(3);
 							//DATA FROM getTasks() FUNCTION
-							$todo = getTasks(3);
-							foreach ($todo as $datum) {
-							?>
-								<button id="<?php echo $datum["id"]; ?>" data-status="<?php echo $datum['status_id']; ?>" type="button" data-bs-toggle="modal" data-bs-target="#modal-task" class="w-100 border-0 mb-1 bg-white d-flex " onclick="edit(<?= $datum['id']; ?>), updateAndDelete()">
-									<div class="p-2">
-										<i class="bi bi-question-circle text-green-500 fs-4"></i>
-									</div>
-									<div class="d-flex flex-column text-start py-2">
-										<div data="<?php echo $datum["title"]; ?>" class="fw-bolder h5 mb-1 "> <?php echo $datum["title"]; ?> </div>
-										<div class="d-flex flex-column text-start">
-											<div data="<?php echo $datum['task_datetime']; ?>" class="text-gray-600 mb-1">#1 created in <?php echo $datum['task_datetime']; ?> </div>
-											<div data="<?php echo $datum['description']; ?> " class="mb-2 text-truncate" style="max-width: 16rem;" title=""><?php echo $datum['description']; ?> </div>
-										</div>
-										<div class="">
-											<span data="<?php echo $datum['priority_id']; ?>" class="btn rounded px-2 py-1 text-white bg-cyan-600"> <?php echo $datum['priority_name']; ?> </span>
-											<span data="<?php echo $datum['type_id']; ?>" class="btn btn-secondary rounded px-2 py-1"><?php echo $datum['types_name']; ?> </span>
-										</div>
-									</div>
-								</button>
-							<?php
-							}
 							?>
 						</div>
 					</div>
@@ -402,20 +362,20 @@ include('scripts.php');
 					</div>
 					<div class="modal-body">
 						<!-- This Input Allows Storing Task Index  -->
-						<input name="id" type="hidden" id="task-id" value="">
+						<input type="hidden" name="task_id" id="task-id" value="">
 						<div class="mb-3">
 							<label class="form-label">Title</label>
-							<input name="title" type="text" class="form-control" id="task-title" />
+							<input type="text" name="title" class="form-control" id="task-title" />
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Type</label>
 							<div class="ms-3">
 								<div class="form-check mb-1">
-									<input class="form-check-input" name="task-type" type="radio" value="1" id="task-type-feature" />
+									<input class="form-check-input" name="type" type="radio" value="1" id="task-type-feature" />
 									<label class="form-check-label" for="task-type-feature">Feature</label>
 								</div>
 								<div class="form-check">
-									<input class="form-check-input" name="task-type" type="radio" value="2" id="task-type-bug" />
+									<input class="form-check-input" name="type" type="radio" value="2" id="task-type-bug" />
 									<label class="form-check-label" for="task-type-bug">Bug</label>
 								</div>
 							</div>
@@ -423,7 +383,7 @@ include('scripts.php');
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Priority</label>
-							<select name="prioritySelect" class="form-select" id="task-priority">
+							<select name="priority" class="form-select" id="task-priority">
 								<option selected disabled value="">Please select</option>
 								<option value="1">Low</option>
 								<option value="2">Medium</option>
@@ -433,7 +393,7 @@ include('scripts.php');
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Status</label>
-							<select name="statusSelect" class="form-select" id="task-status">
+							<select name="status" class="form-select" id="task-status">
 								<option selected disabled value="">Please select</option>
 								<option value="1">To Do</option>
 								<option value="2">In Progress</option>
@@ -452,11 +412,11 @@ include('scripts.php');
 					</div>
 					<div class="modal-footer">
 						<a href="#" class="btn btn-white" data-bs-dismiss="modal">Cancel</a>
+						<button type="submit" name="save" class="btn btn-primary task-action-btn" id="task-save-btn">Save</button>
 						<div id="btn-update-delete">
 							<button type="submit" name="delete" class="btn btn-danger task-action-btn" id="task-delete-btn">Delete</button>
 							<button type="submit" name="update" class="btn btn-warning task-action-btn" id="task-update-btn">Update</button>
 						</div>
-						<button type="submit" name="save" class="btn btn-primary task-action-btn" id="task-save-btn">Save</button>
 					</div>
 				</form>
 			</div>
@@ -467,7 +427,7 @@ include('scripts.php');
 	<script src="assets/js/vendor.min.js"></script>
 	<script src="assets/js/app.min.js"></script>
 	<!-- ================== END core-js ================== -->
-	<script src="assets/js/mail.js"></script>
+	<script src="assets/js/main.js"></script>
 
 	<script>
 		//reloadTasks();

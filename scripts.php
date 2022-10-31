@@ -12,77 +12,74 @@ if (isset($_POST['delete']))      deleteTask();
 
 function getTasks($status)
 {
-    global $connection;
-    $query = "SELECT tasks.*, statues.name AS statue_name, types.name as types_name, priorities.name AS priority_name FROM tasks INNER JOIN statues ON statues.id = tasks.status_id INNER JOIN priorities on priorities.id = tasks.priority_id INNER JOIN types on types.id =tasks.type_id WHERE tasks.status_id = $status";
-    $data = mysqli_query($connection, $query);
-    // $data = mysqli_fetch_assoc($query_run);
-    return $data;
+    global $conn;
+    $query = "SELECT tasks.*, types.name as type_name, priorities.name as priority_name, statuses.name as status_name FROM tasks  
+    INNER JOIN types on tasks.type_id =  types.id INNER JOIN priorities on tasks.priority_id = priorities.id 
+    INNER JOIN statuses on tasks.status_id = statuses.id where tasks.status_id = $status";
+    $data = mysqli_query($conn, $query);
+
+    foreach ($data as $row) {
+        # code...
+        echo "<button id='{$row['id']}' data-status='{$row['status_id']}' type='button' data-bs-toggle='modal' data-bs-target='#modal-task' class='w-100 border-0 mb-1 bg-white d-flex' onclick='edit({$row['id']}), updateAndDelete()'>
+        <div class='p-2'>
+            <i class='bi bi-question-circle text-green-500 fs-4'></i>
+        </div>
+        <div class='d-flex flex-column text-start py-2'>
+            <div id='{$row['id']}title' data='{$row['title']}' class='fw-bolder h5 mb-1 '> {$row['title']} </div>
+            <div class='d-flex flex-column text-start'>
+                <div id='{$row['id']}date' data='{$row['task_datetime']}' class='text-gray-600 mb-1'>#1 created in {$row['task_datetime']}</div>
+                <div id='{$row['id']}description' data='{$row['description']} ' class='mb-2 text-truncate' style='max-width: 16rem;' title=''> {$row['description']} </div>
+            </div>
+            <div class=''>
+                <span id='{$row['id']}priority' data='{$row['priority_id']}' class='btn rounded px-2 py-1 text-white bg-cyan-600'> {$row['priority_name']} </span>
+                <span id='{$row['id']}type' data='{$row['type_id']}' class='btn btn-secondary rounded px-2 py-1'> {$row['type_name']} </span>
+            </div>
+        </div>
+    </button>";
+    }
 }
 
 
 function saveTask()
 {
-    global $connection;
-    $title = $_POST['title'];
-    $type = $_POST['task-type'];
-    $priority = $_POST['prioritySelect'];
-    $status = $_POST['statusSelect'];
-    $date = $_POST['date'];
-    $description = $_POST['description'];
-    $query = "INSERT INTO tasks(`title`,`type_id`,`priority_id`,`status_id`,`task_datetime`,`description`) VALUES('$title','$type','$priority','$status','$date','$description')";
-    $query_run = mysqli_query($connection, $query);
+    global $conn;
+    extract($_POST);
+    $query = "INSERT INTO tasks (`title`,`type_id`,`priority_id`,`status_id`,`task_datetime`,`description`) VALUES('$title','$type','$priority','$status','$date','$description')";
+
+    $query_run = mysqli_query($conn, $query);
     if ($query_run) {
+        # code...
         $_SESSION['message'] = "Task has been added successfully !";
-        header('Location: index.php');
+        header('location: index.php');
     }
 }
 
 function updateTask()
 {
     //CODE HERE
-    global $connection;
-    $title_edit = $_POST['title'];
-    $type_edit = $_POST['task-type'];
-    $priority_edit = $_POST['prioritySelect'];
-    $status_edit = $_POST['statusSelect'];
-    $date_edit = $_POST['date'];
-    $description_edit = $_POST['description'];
-    $id = $_POST['id'];
+    global $conn;
+    extract($_POST);
 
-    $sql = "UPDATE tasks 
-    SET title = '$title_edit', type_id = '$type_edit', priority_id = '$priority_edit', status_id = '$status_edit', task_datetime = '$date_edit', description = '$description_edit'
-    WHERE id = $id ";
-    $query_run = mysqli_query($connection, $sql);
+    $query = "UPDATE tasks SET title = '$title', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$date', description = '$description' WHERE $task_id = id";
+    $query_run = mysqli_query($conn, $query);
     if ($query_run) {
-        $_SESSION['message'] = "Task has been updated successfully !";
+        # code...
+        $_SESSION['message'] = "Task has been updated successfully!";
         header('location: index.php');
     }
-    // $type = $_POST['task-type'];
-    // $priority = $_POST['prioritySelect'];
-    // $status = $_POST['statusSelect'];
-    // $date = $_POST['date'];
-    // $description = $_POST['description'];
-    // $sql = "UPDATE INTO tasks(`title`,`type_id`,`priority_id`,`status_id`,`task_datetime`,`description`) VALUES('$title_edit','$type','$priority','$status','$date','$description')";
-
-    //SQL UPDATE
-    // $_SESSION['message'] = "Task has been updated successfully !";
-    // header('location: index.php');
 }
 
 function deleteTask()
 {
     //CODE HERE
+    global $conn;
+    $id = $_POST["task_id"];
+    $query = "DELETE FROM tasks WHERE $id = id";
+    $query_run = mysqli_query($conn, $query);
     //SQL DELETE
-    global $connection;
-    $id = $_POST['id'];
-
-    $sql = "DELETE FROM tasks WHERE id = $id";
-
-    $query_run = mysqli_query($connection, $sql);
     if ($query_run) {
-        $_SESSION['message'] = "Task has been deleted successfully !";
+        # code...
+        $_SESSION['message'] = "Task has been deleted successfully!";
         header('location: index.php');
     }
-    //     $_SESSION['message'] = "Task has been deleted successfully !";
-    //     header('location: index.php');
 }
