@@ -4,7 +4,7 @@
 $conn = mysqli_connect("localhost", "root", "", "testing");
 // Check connection
 if ($conn) {
-    echo ("Connection goooood");
+    echo ("Connection is good. connecting to the server...");
 } else {
     echo "Connected baaaad";
 }

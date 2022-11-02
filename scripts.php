@@ -18,11 +18,19 @@ function getTasks($status)
     INNER JOIN statuses on tasks.status_id = statuses.id where tasks.status_id = $status";
     $data = mysqli_query($conn, $query);
 
+    if ($status == 1) {
+        $icon = 'bi-question-circle';
+    } elseif ($status == 2) {
+        $icon = 'bi-clock-history';
+    } else {
+        $icon = 'bi-check-circle';
+    }
+
     foreach ($data as $row) {
         # code...
         echo "<button id='{$row['id']}' data-status='{$row['status_id']}' type='button' data-bs-toggle='modal' data-bs-target='#modal-task' class='w-100 border-0 mb-1 bg-white d-flex' onclick='edit({$row['id']}), updateAndDelete()'>
         <div class='p-2'>
-            <i class='bi bi-question-circle text-green-500 fs-4'></i>
+            <i class='bi {$icon} text-green-500 fs-4'></i>
         </div>
         <div class='d-flex flex-column text-start py-2'>
             <div id='{$row['id']}title' data='{$row['title']}' class='fw-bolder h5 mb-1 '> {$row['title']} </div>
@@ -59,6 +67,7 @@ function updateTask()
     //CODE HERE
     global $conn;
     extract($_POST);
+
 
     $query = "UPDATE tasks SET title = '$title', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$date', description = '$description' WHERE $task_id = id";
     $query_run = mysqli_query($conn, $query);

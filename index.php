@@ -17,6 +17,7 @@ include('scripts.php');
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 	<link href="assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="assets/css/default/app.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 	<!-- ================== END core-css ================== -->
 </head>
 
@@ -366,6 +367,7 @@ include('scripts.php');
 						<div class="mb-3">
 							<label class="form-label">Title</label>
 							<input type="text" name="title" class="form-control" id="task-title" />
+							<div class="text-danger" id="valid-title"></div>
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Type</label>
@@ -399,6 +401,7 @@ include('scripts.php');
 								<option value="2">In Progress</option>
 								<option value="3">Done</option>
 							</select>
+							<div class="text-danger" id="valid-status"></div>
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Date</label>
