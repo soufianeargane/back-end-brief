@@ -8,6 +8,7 @@ function resetInputValidation(){
 
 function edit(id){
     let title       = document.getElementById(id+"title").getAttribute("data");
+    // console.log(document.getElementById(id+"title"))
     let date        = document.getElementById(id +"date").getAttribute("data") //date
     let description = document.getElementById(id +"description").getAttribute("data")
     let priority    = document.getElementById(id +"priority").getAttribute("data")
@@ -40,6 +41,8 @@ function updateAndDelete(){
     document.getElementById("btn-update-delete").style.display='block';
     document.getElementById("task-save-btn").style.display='none';
 }
+
+
 
 /****************  VALIDATION  ************/ 
 let title_input = document.querySelector("#task-title");

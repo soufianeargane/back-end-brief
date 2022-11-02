@@ -18,6 +18,11 @@ function getTasks($status)
     INNER JOIN statuses on tasks.status_id = statuses.id where tasks.status_id = $status";
     $data = mysqli_query($conn, $query);
 
+    return $data;
+}
+
+function showButton($data, $status)
+{
     if ($status == 1) {
         $icon = 'bi-question-circle';
     } elseif ($status == 2) {
@@ -47,11 +52,13 @@ function getTasks($status)
     }
 }
 
-
 function saveTask()
 {
     global $conn;
     extract($_POST);
+    if ($date == "") {
+        $date = date("Y-m-d");
+    }
     $query = "INSERT INTO tasks (`title`,`type_id`,`priority_id`,`status_id`,`task_datetime`,`description`) VALUES('$title','$type','$priority','$status','$date','$description')";
 
     $query_run = mysqli_query($conn, $query);

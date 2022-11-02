@@ -119,7 +119,7 @@ include('scripts.php');
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
 						<img src="assets/img/user/user-13.jpg" alt="" />
 						<span>
-							<span class="d-none d-md-inline">Jilali Smith</span>
+							<span class="d-none d-md-inline">Soufiane Ar</span>
 							<b class="caret"></b>
 						</span>
 					</a>
@@ -155,7 +155,7 @@ include('scripts.php');
 							<div class="menu-profile-info">
 								<div class="d-flex align-items-center">
 									<div class="flex-grow-1">
-										Jilali Smith
+										SOUFIANE AR.Dev
 									</div>
 									<div class="menu-caret ms-auto"></div>
 								</div>
@@ -278,7 +278,8 @@ include('scripts.php');
 						<div class="list-group list-group-flush rounded-bottom overflow-hidden panel-body p-0" id="to-do-tasks">
 							<!-- TO DO TASKS HERE -->
 							<?php
-							getTasks(1);
+							$todo = getTasks(1);
+							showButton($todo, 1);
 							?>
 						</div>
 					</div>
@@ -306,7 +307,8 @@ include('scripts.php');
 							<!-- IN PROGRESS TASKS HERE -->
 							<?php
 							//PHP CODE HERE
-							getTasks(2);
+							$doing = getTasks(2);
+							showButton($doing, 2);
 							//DATA FROM getTasks() FUNCTION
 							?>
 						</div>
@@ -335,7 +337,8 @@ include('scripts.php');
 							<!-- DONE TASKS HERE -->
 							<?php
 							//PHP CODE HERE
-							getTasks(3);
+							$done = getTasks(3);
+							showButton($done, 3);
 							//DATA FROM getTasks() FUNCTION
 							?>
 						</div>
